@@ -100,7 +100,7 @@ jobs:
         # package install has DeprecationWarnings
         PYTHONWARNINGS: default
     - name: Test openpilot environment
-      run: poetry run scons -h
+      run: poetry run scons -j$(nproc)
 
   static_analysis:
     name: static analysis
