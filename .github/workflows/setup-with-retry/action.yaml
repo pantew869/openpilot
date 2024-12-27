@@ -18,6 +18,7 @@ runs:
       continue-on-error: true
       with:
         is_retried: true
+      secrets: inherit
     - if: steps.setup1.outcome == 'failure'
       shell: bash
       run: sleep ${{ inputs.sleep_time }}
@@ -27,6 +28,7 @@ runs:
       continue-on-error: true
       with:
         is_retried: true
+      secrets: inherit
     - if: steps.setup2.outcome == 'failure'
       shell: bash
       run: sleep ${{ inputs.sleep_time }}
@@ -35,3 +37,4 @@ runs:
       uses: ./.github/workflows/setup
       with:
         is_retried: true
+      secrets: inherit

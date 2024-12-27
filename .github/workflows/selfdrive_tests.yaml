@@ -51,6 +51,7 @@ jobs:
       timeout-minutes: 1
       run: TARGET_DIR=$STRIPPED_DIR release/build_devel.sh
     - uses: ./.github/workflows/setup-with-retry
+      secrets: inherit
     - name: Check submodules
       if: github.repository == 'commaai/openpilot'
       timeout-minutes: 3
@@ -88,6 +89,7 @@ jobs:
         echo "PUSH_IMAGE=true" >> "$GITHUB_ENV"
         $DOCKER_LOGIN
     - uses: ./.github/workflows/setup-with-retry
+      secrets: inherit
     - uses: ./.github/workflows/compile-openpilot
       timeout-minutes: 30
 
@@ -128,6 +130,7 @@ jobs:
       with:
         submodules: true
     - uses: ./.github/workflows/setup-with-retry
+      secrets: inherit
     - name: Static analysis
       timeout-minutes: 1
       run: ${{ env.RUN }} "scripts/lint/lint.sh"
@@ -142,6 +145,7 @@ jobs:
       with:
         submodules: true
     - uses: ./.github/workflows/setup-with-retry
+      secrets: inherit
     - name: Build openpilot
       run: ${{ env.RUN }} "scons -j$(nproc)"
     - name: Run unit tests
@@ -169,6 +173,7 @@ jobs:
       with:
         submodules: true
     - uses: ./.github/workflows/setup-with-retry
+      secrets: inherit
     - name: Cache test routes
       id: dependency-cache
       uses: actions/cache@v4
@@ -226,6 +231,7 @@ jobs:
       with:
         submodules: true
     - uses: ./.github/workflows/setup-with-retry
+      secrets: inherit
     - name: Cache test routes
       id: routes-cache
       uses: actions/cache@v4
@@ -261,6 +267,7 @@ jobs:
           ref: ${{ github.event.pull_request.base.ref }}
       - run: git lfs pull
       - uses: ./.github/workflows/setup-with-retry
+        secrets: inherit
       - name: Get base car info
         run: |
           ${{ env.RUN }} "scons -j$(nproc) && python3 selfdrive/debug/dump_car_docs.py --path /tmp/openpilot_cache/base_car_docs"
@@ -315,6 +322,7 @@ jobs:
       with:
         submodules: true
     - uses: ./.github/workflows/setup-with-retry
+      secrets: inherit
     - name: Build openpilot
       run: |
         ${{ env.RUN }} "scons -j$(nproc)"
@@ -336,6 +344,7 @@ jobs:
         with:
           submodules: true
       - uses: ./.github/workflows/setup-with-retry
+        secrets: inherit
       - name: caching frames
         id: frames-cache
         uses: actions/cache@v4
