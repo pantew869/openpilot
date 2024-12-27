@@ -44,14 +44,6 @@ runs:
         restore-keys: |
           scons-${{ runner.arch }}-${{ env.CACHE_COMMIT_DATE }}
           scons-${{ runner.arch }}
-    - id: docker-cache
-      uses: ./.github/workflows/auto-cache
-      with:
-        path: .ci_cache/docker_cache
-        key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}
-        restore-keys: |
-          docker-${{ hashFiles('Dockerfile.openpilot_base') }}
-
     # as suggested here: https://github.com/moby/moby/issues/32816#issuecomment-910030001
     - id: normalize-file-permissions
       shell: bash
@@ -60,17 +52,5 @@ runs:
         find . -type f -executable -not -perm 755 -exec chmod 755 {} \;
         find . -type f -not -executable -not -perm 644 -exec chmod 644 {} \;
     # build our docker image
-    - id: restore-docker-image
-      shell: bash
-      if: steps.docker-cache.outputs.cache-hit == 'true'
-      run: docker image load --input .ci_cache/docker_cache/openpilot_base.tar
-
-    - id: build-docker-image
-      shell: bash
-      if: steps.docker-cache.outputs.cache-hit != 'true'
+    - shell: bash
       run: eval ${{ env.BUILD }}
-
-    - id: save-docker-image
-      shell: bash
-      if: steps.docker-cache.outputs.cache-hit != 'true'
-      run: docker image save --output .ci_cache/docker_cache/openpilot_base.tar openpilot-base
