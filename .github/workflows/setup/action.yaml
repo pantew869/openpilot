@@ -5,8 +5,6 @@ inputs:
     description: 'A mock param that asserts that we use the setup-with-retry instead of this action directly'
     required: false
     default: 'false'
-  GITHUB_TOKEN:
-    required: true
 runs:
   using: "composite"
   steps:
