@@ -53,10 +53,8 @@ runs:
         find . -type f -executable -not -perm 755 -exec chmod 755 {} \;
         find . -type f -not -executable -not -perm 644 -exec chmod 644 {} \;
     # build our docker image
+    - uses: crazy-max/ghaction-github-runtime@v3
     - uses: docker/setup-buildx-action@v3
     - id: build-docker-image
       shell: bash
-      env:
-        ACTIONS_RUNTIME_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-        ACTIONS_CACHE_URL: ${{ github.server_url }}/${{ github.repository }}
       run: eval ${{ env.BUILD }}
