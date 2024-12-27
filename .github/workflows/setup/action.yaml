@@ -54,5 +54,5 @@ runs:
     # build our docker image
     - shell: bash
       env:
-        ACTIONS_RUNTIME_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ACTIONS_RUNTIME_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       run: eval ${{ env.BUILD }}
