@@ -47,6 +47,7 @@ runs:
     - id: docker-cache
       uses: ./.github/workflows/auto-cache
       with:
+        save: true
         path: .ci_cache/docker_cache
         key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}
         restore-keys: |
@@ -72,5 +73,5 @@ runs:
 
     - id: save-docker-image
       shell: bash
-#      if: steps.docker-cache.outputs.cache-hit != 'true'
+      if: steps.docker-cache.outputs.cache-hit != 'true'
       run: docker image save --output .ci_cache/docker_cache/openpilot_base.tar openpilot-base
