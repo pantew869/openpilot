@@ -61,13 +61,15 @@ runs:
         find . -type f -not -executable -not -perm 644 -exec chmod 644 {} \;
     # build our docker image
     - id: restore-docker-image
+      shell: bash
       if: steps.docker-cache.outputs.cache-hit == 'true'
       run: docker image load --input .ci_cache/docker_cache/openpilot_base.tar
 
     - id: build-docker-image
-      if: steps.docker-cache.outputs.cache-hit != 'true'
       shell: bash
+      if: steps.docker-cache.outputs.cache-hit != 'true'
       run: eval ${{ env.BUILD }}
 
     - id: Save docker image
+      shell: bash
       run: docker image save --output .ci_cache/docker_cache/openpilot_base.tar openpilot-base
