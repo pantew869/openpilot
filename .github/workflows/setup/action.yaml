@@ -70,6 +70,6 @@ runs:
       if: steps.docker-cache.outputs.cache-hit != 'true'
       run: eval ${{ env.BUILD }}
 
-    - id: Save docker image
+    - id: save-docker-image
       shell: bash
       run: docker image save --output .ci_cache/docker_cache/openpilot_base.tar openpilot-base
