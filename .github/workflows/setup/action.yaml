@@ -77,6 +77,6 @@ runs:
     - uses: ./.github/workflows-auto-cache
       with:
         path: .ci_cache/docker_cache
-        key: docker-${{ hashFIles("Dockerfile.openpilot_base') }}
+        key: docker-${{ hashFIles('Dockerfile.openpilot_base') }}
         restore-keys: docker-${{ hashFiles('Dockerfile.openpilot_base') }}
         save: true
