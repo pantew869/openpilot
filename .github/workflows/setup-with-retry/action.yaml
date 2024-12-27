@@ -9,7 +9,8 @@ inputs:
     description: 'Time to sleep between retries'
     required: false
     default: 30
-
+  GITHUB_TOKEN:
+    required: true
 runs:
   using: "composite"
   steps:
@@ -18,6 +19,7 @@ runs:
       continue-on-error: true
       with:
         is_retried: true
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       secrets: inherit
     - if: steps.setup1.outcome == 'failure'
       shell: bash
@@ -28,6 +30,7 @@ runs:
       continue-on-error: true
       with:
         is_retried: true
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       secrets: inherit
     - if: steps.setup2.outcome == 'failure'
       shell: bash
@@ -37,4 +40,4 @@ runs:
       uses: ./.github/workflows/setup
       with:
         is_retried: true
-      secrets: inherit
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}

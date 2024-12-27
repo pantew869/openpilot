@@ -5,7 +5,8 @@ inputs:
     description: 'A mock param that asserts that we use the setup-with-retry instead of this action directly'
     required: false
     default: 'false'
-
+  GITHUB_TOKEN:
+    required: true
 runs:
   using: "composite"
   steps:
@@ -55,5 +56,5 @@ runs:
     - id: build-docker-image
       shell: bash
       env:
-        ACTIONS_RUNTIME_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ACTIONS_RUNTIME_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       run: eval ${{ env.BUILD }}
