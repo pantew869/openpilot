@@ -49,8 +49,7 @@ runs:
       with:
         path: .ci_cache/docker_cache
         key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}
-        restore-keys: |
-          docker-${{ hashFiles('Dockerfile.openpilot_base') }}
+        restore-keys: docker-${{ hashFiles('Dockerfile.openpilot_base') }}
 
     # as suggested here: https://github.com/moby/moby/issues/32816#issuecomment-910030001
     - id: normalize-file-permissions
@@ -79,6 +78,5 @@ runs:
       with:
         path: .ci_cache/docker_cache
         key: docker-${{ hashFIles("Dockerfile.openpilot_base') }}
-        restore-keys: |
-          docker-${{ hashFiles('Dockerfile.openpilot_base') }}
+        restore-keys: docker-${{ hashFiles('Dockerfile.openpilot_base') }}
         save: true
