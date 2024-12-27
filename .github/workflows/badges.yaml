@@ -21,7 +21,8 @@ jobs:
       with:
         submodules: true
     - uses: ./.github/workflows/setup-with-retry
-      secrets: inherit
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Push badges
       run: |
         ${{ env.RUN }} "scons -j$(nproc) && python3 selfdrive/ui/translations/create_badges.py"

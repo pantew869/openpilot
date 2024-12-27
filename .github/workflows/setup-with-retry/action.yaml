@@ -20,7 +20,6 @@ runs:
       with:
         is_retried: true
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-      secrets: inherit
     - if: steps.setup1.outcome == 'failure'
       shell: bash
       run: sleep ${{ inputs.sleep_time }}
@@ -31,7 +30,6 @@ runs:
       with:
         is_retried: true
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-      secrets: inherit
     - if: steps.setup2.outcome == 'failure'
       shell: bash
       run: sleep ${{ inputs.sleep_time }}
