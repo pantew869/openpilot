@@ -50,7 +50,7 @@ runs:
         path: .ci_cache/docker_cache
         key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}
         restore-keys: docker-${{ hashFiles('Dockerfile.openpilot_base') }}
-
+        save: true
     # as suggested here: https://github.com/moby/moby/issues/32816#issuecomment-910030001
     - id: normalize-file-permissions
       shell: bash
@@ -73,10 +73,3 @@ runs:
       shell: bash
       if: steps.docker-cache.outputs.cache-hit != 'true'
       run: docker image save --output .ci_cache/docker_cache/openpilot_base.tar openpilot-base
-      
-    - uses: ./.github/workflows/auto-cache
-      with:
-        path: .ci_cache/docker_cache
-        key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}
-        restore-keys: docker-${{ hashFiles('Dockerfile.openpilot_base') }}
-        save: true
