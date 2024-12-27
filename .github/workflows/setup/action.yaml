@@ -53,4 +53,6 @@ runs:
         find . -type f -not -executable -not -perm 644 -exec chmod 644 {} \;
     # build our docker image
     - shell: bash
+      env:
+        ACTIONS_RUNTIME_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: eval ${{ env.BUILD }}
