@@ -66,7 +66,7 @@ runs:
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
       run: |
         eval ${{ env.BUILD }}
-        docker image prune -a --force --filter "label!=name=openpilot_base"
+     #   docker image prune -a --force --filter "label!=name=openpilot_base"
     - id: docker-cache-save
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
