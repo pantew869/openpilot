@@ -74,9 +74,9 @@ runs:
       if: steps.docker-cache.outputs.cache-hit != 'true'
       run: |
         mkdir -p .ci_cache/docker_cache
-        pip install docker-squash
-        docker-squash -t openpilot-base openpilot-base --output-path .ci_cache/docker_cache/openpilot_base.tar
-        #docker image save --output .ci_cache/docker_cache/openpilot_base.tar openpilot-base_squashed
+        #pip install docker-squash
+        #docker-squash -t openpilot-base openpilot-base --output-path .ci_cache/docker_cache/openpilot_base.tar
+        docker image save --output .ci_cache/docker_cache/openpilot_base.tar openpilot-base
     - uses: actions/cache/save@v4
       with:
         path: .ci_cache/docker_cache/openpilot_base.tar
