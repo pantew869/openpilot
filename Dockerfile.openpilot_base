@@ -1,4 +1,4 @@
-FROM ubuntu:24.04 AS BASE
+FROM ubuntu:24.04 AS base
 
 ENV PYTHONUNBUFFERED=1
 
@@ -78,13 +78,13 @@ COPY --chown=$USER tools/install_python_dependencies.sh /home/$USER/tools/
 
 ENV VIRTUAL_ENV=/home/$USER/.venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-FROM BASE as PYTHON_BUILDER
+FROM base AS PYTHON_BUILDER
 
 RUN cd /home/$USER && \
     tools/install_ubuntu_dependencies.sh python && \
     tools/install_python_dependencies.sh && \
     rm -rf tools/ pyproject.toml uv.lock .cache
-FROM BASE as FINAL
+FROM base AS FINAL
 COPY --from=PYTHON_BUILDER $VIRTUAL_ENV $VIRTUAL_ENV
 
 USER root
