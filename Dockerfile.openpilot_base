@@ -81,7 +81,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 FROM base AS BUILD
 
 RUN cd /home/$USER && \
-    tools/install_ubuntu_dependencies.sh python && \
+    /tmp/tools/install_ubuntu_dependencies.sh python && \
     tools/install_python_dependencies.sh && \
     rm -rf tools/ pyproject.toml uv.lock .cache
 FROM base AS FINAL
