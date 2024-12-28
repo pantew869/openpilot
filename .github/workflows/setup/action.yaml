@@ -52,6 +52,8 @@ runs:
         find . -type f -executable -not -perm 755 -exec chmod 755 {} \;
         find . -type f -not -executable -not -perm 644 -exec chmod 644 {} \;
 
+    - shell: bash
+      run: chmod 777 -R /var/lib/docker/images
     - id: docker-cache-restore
       uses: actions/cache/restore@v4
       with:
