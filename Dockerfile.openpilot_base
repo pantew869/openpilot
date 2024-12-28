@@ -78,6 +78,6 @@ RUN cd /home/$USER && \
     rm -rf tools/ pyproject.toml uv.lock .cache
 USER root
 RUN apt remove libffi-dev portaudio19-dev --purge -y
-RUN du -sh 2> /dev/null
+RUN du -h / --exclude /proc --exclude /run 2> /dev/null
 
 RUN sudo git config --global --add safe.directory /tmp/openpilot
