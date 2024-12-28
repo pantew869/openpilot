@@ -59,12 +59,12 @@ runs:
         key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}-${{ hashFiles('tools/install_ubuntu_dependencies.sh') }}-${{ hashFiles('tools/install_python_dependencies.sh') }}-${{ hashFIles('uv.lock') }}
     # build our docker image
     - shell: bash
-      if: docker-cache-restore.outputs.cache-hit != 'true'
+      if: steps.docker-cache-restore.outputs.cache-hit != 'true'
       run: |
         eval ${{ env.BUILD }}
         docker image prune -a --force --filter "label!=name=openpilot_base"
     - id: docker-cache-save
-      if: docker-cache-restore.outputs.cache-hit != 'true'
+      if: steps.docker-cache-restore.outputs.cache-hit != 'true'
       uses: action/cache/save@v4
       with:
         path: /var/lib/docker/images
