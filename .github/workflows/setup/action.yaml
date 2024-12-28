@@ -52,9 +52,20 @@ runs:
         find . -type f -executable -not -perm 755 -exec chmod 755 {} \;
         find . -type f -not -executable -not -perm 644 -exec chmod 644 {} \;
 
-    - uses: ScribeMD/docker-cache@0.5.0
+    - id: docker-cache-restore
+      uses: actions/cache/restore@v4
       with:
+        path: /var/lib/docker/images
         key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}-${{ hashFiles('tools/install_ubuntu_dependencies.sh') }}-${{ hashFiles('tools/install_python_dependencies.sh') }}-${{ hashFIles('uv.lock') }}
     # build our docker image
     - shell: bash
-      run: eval ${{ env.BUILD }}
+      if: docker-cache.cache-hit != 'true'
+      run: |
+        eval ${{ env.BUILD }}
+        docker image prune -a --force --filter "label!=name=openpilot_base"
+    - id: docker-cache-save
+      if: docker-cache.cache-hit != 'true'
+      uses: action/cache/save@v4
+      with:
+        path: /var/lib/docker/images
+        key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}-${{ hashFiles('tools/install_ubuntu_dependencies.sh') }}-${{ hashFiles('tools/install_python_dependencies.sh') }}-${{ hashFIles('uv.lock') }}
