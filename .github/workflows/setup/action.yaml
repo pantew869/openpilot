@@ -53,7 +53,9 @@ runs:
         find . -type f -not -executable -not -perm 644 -exec chmod 644 {} \;
 
     - shell: bash
-      run: sudo chmod 777 -R /var/lib/docker/images
+      run: |
+        sudo mkdir -p /var/lib/docker/images
+        sudo chmod 777 -R /var/lib/docker/images
     - id: docker-cache-restore
       uses: actions/cache/restore@v4
       with:
