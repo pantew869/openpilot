@@ -1,6 +1,6 @@
-LABEL name="openpilot_base"
-
 FROM ubuntu:24.04
+
+LABEL name="openpilot_base"
 
 ENV PYTHONUNBUFFERED=1
 
