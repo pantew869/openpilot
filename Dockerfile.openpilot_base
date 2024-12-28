@@ -4,7 +4,7 @@ ENV PYTHONUNBUFFERED=1
 
 ENV DEBIAN_FRONTEND=noninteractive
 # Don't install man pages and docs
-COPY tools/dpkg_docs /etc/dpkg/dpkg.cfg.d/01_nodoc
+COPY tools/dpkg_nodocs /etc/dpkg/dpkg.cfg.d/01_nodoc
 RUN apt-get update && \
     apt-get install -y --no-install-recommends sudo tzdata locales pulseaudio xvfb x11-xserver-utils python3-tk python3-dev && \
     rm -rf /var/lib/apt/lists/*
