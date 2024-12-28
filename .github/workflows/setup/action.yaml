@@ -48,7 +48,7 @@ runs:
       uses: actions/cache/restore@v4
       with:
         path: .ci_cache/docker_cache/openpilot_base.tar
-        key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}
+        key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}-${{ hashFiles('tools/install_ubuntu_dependencies.sh') }}-${{ hashFiles('tools/install_python_dependencies.sh') }}-${{ hashFIles('uv.lock') }}
         #restore-keys: docker-${{ hashFiles('Dockerfile.openpilot_base') }}
         #save: true
     # as suggested here: https://github.com/moby/moby/issues/32816#issuecomment-910030001
@@ -80,4 +80,4 @@ runs:
     - uses: actions/cache/save@v4
       with:
         path: .ci_cache/docker_cache/openpilot_base.tar
-        key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}
+        key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}-${{ hashFiles('tools/install_ubuntu_dependencies.sh') }}-${{ hashFiles('tools/install_python_dependencies.sh') }}-${{ hashFIles('uv.lock') }}

@@ -70,7 +70,7 @@ function install_python_requirements() {
     g++-12 \
     libffi-dev \
     portaudio19-dev \
-    libzmq3-dev \
+    libzmq3-dev
 }
 
 # Install Ubuntu 24.04 LTS packages
