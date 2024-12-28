@@ -40,7 +40,7 @@ function install_ubuntu_common_requirements() {
     libavfilter-dev \
     libbz2-dev \
     libeigen3-dev \
-    libffi-dev \
+#    libffi-dev \
     libglew-dev \
     libgles2-mesa-dev \
     libglfw3-dev \
@@ -49,7 +49,7 @@ function install_ubuntu_common_requirements() {
     libncurses5-dev \
     libssl-dev \
     libusb-1.0-0-dev \
-    libzmq3-dev \
+   # libzmq3-dev \
     libzstd-dev \
     libsqlite3-dev \
     libsystemd-dev \
@@ -57,7 +57,7 @@ function install_ubuntu_common_requirements() {
     opencl-headers \
     ocl-icd-libopencl1 \
     ocl-icd-opencl-dev \
-    portaudio19-dev \
+  #  portaudio19-dev \
     qttools5-dev-tools \
     libqt5svg5-dev \
     libqt5serialbus5-dev  \
@@ -65,12 +65,19 @@ function install_ubuntu_common_requirements() {
     libqt5opengl5-dev
 }
 
+function install_python_requirements() {
+  $SUDO apt-get install -y --no-install-recommends \
+    g++-12 \
+    libffi-dev \
+    portaudio19-dev \
+    libzmq3-dev \
+}
+
 # Install Ubuntu 24.04 LTS packages
 function install_ubuntu_lts_latest_requirements() {
   install_ubuntu_common_requirements
 
   $SUDO apt-get install -y --no-install-recommends \
-    g++-12 \
     qtbase5-dev \
     qtchooser \
     qt5-qmake \
@@ -132,4 +139,8 @@ EOF
 else
   echo "No /etc/os-release in the system. Make sure you're running on Ubuntu, or similar."
   exit 1
+fi
+
+if [ -n "python" ]; then
+  install_python_requirements
 fi

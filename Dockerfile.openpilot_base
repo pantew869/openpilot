@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM ubuntu:24.04 AS BASE
 
 ENV PYTHONUNBUFFERED=1
 
@@ -17,7 +17,12 @@ RUN /tmp/tools/install_ubuntu_dependencies.sh && \
     rm -rf /var/lib/apt/lists/* /tmp/* && \
     cd /usr/lib/gcc/arm-none-eabi/* && \
     rm -rf arm/ thumb/nofp thumb/v6* thumb/v8* thumb/v7+fp thumb/v7-r+fp.sp
-
+# Delete man pages
+RUN rm -rf /usr/share/doc/* && \
+    rm -rf /usr/share/man/* && \
+    rm -rf /usr/share/groff/* && \
+    rm -rf /usr/share/info/* && \
+    rm -rf /var/cache/man/*
 # Add OpenCL
 #RUN apt-get update && apt-get install -y --no-install-recommends \
     #apt-utils \
@@ -73,18 +78,14 @@ COPY --chown=$USER tools/install_python_dependencies.sh /home/$USER/tools/
 
 ENV VIRTUAL_ENV=/home/$USER/.venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+FROM BASE as PYTHON_BUILDER
+
 RUN cd /home/$USER && \
+    tools/install_ubuntu_dependencies.sh python && \
     tools/install_python_dependencies.sh && \
     rm -rf tools/ pyproject.toml uv.lock .cache
+FROM BASE as FINAL
+COPY --from=PYTHON_BUILDER $VIRTUAL_ENV $VIRTUAL_ENV
+
 USER root
-RUN apt remove libffi-dev portaudio19-dev g++-12 --purge -y
-# Delete man pages
-RUN rm -rf /usr/share/doc/* && \
-    rm -rf /usr/share/man/* && \
-    rm -rf /usr/share/groff/* && \
-    rm -rf /usr/share/info/* && \
-    rm -rf /var/cache/man/*
-
-RUN du -h / --exclude /proc --exclude /run 2> /dev/null
-
 RUN sudo git config --global --add safe.directory /tmp/openpilot
