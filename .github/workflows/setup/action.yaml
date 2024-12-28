@@ -55,6 +55,7 @@ runs:
     - shell: bash
       run: |
         sudo chown -R $(whoami) /var/lib/docker
+        sudo chown -R $(whoami) /var/lib/docker/image
         ls -lh /var/lib/docker/image/*
     - id: docker-cache-restore
       uses: actions/cache/restore@v4
