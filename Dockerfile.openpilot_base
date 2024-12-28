@@ -19,20 +19,20 @@ RUN /tmp/tools/install_ubuntu_dependencies.sh && \
     rm -rf arm/ thumb/nofp thumb/v6* thumb/v8* thumb/v7+fp thumb/v7-r+fp.sp
 
 # Add OpenCL
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    apt-utils \
-    alien \
-    unzip \
-    tar \
-    curl \
-    xz-utils \
-    dbus \
+#RUN apt-get update && apt-get install -y --no-install-recommends \
+    #apt-utils \
+    #alien \
+    #unzip \
+    #tar \
+    #curl \
+    #xz-utils \
+    #dbus \
     #gcc-arm-none-eabi \
-    tmux \
-    vim \
-    libx11-6 \
-    wget \
-  && rm -rf /var/lib/apt/lists/*
+    #tmux \
+    #vim \
+    #libx11-6 \
+    ##wget \
+#  && rm -rf /var/lib/apt/lists/*
 
 #RUN mkdir -p /tmp/opencl-driver-intel && \
 #    cd /tmp/opencl-driver-intel && \
