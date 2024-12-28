@@ -78,14 +78,14 @@ COPY --chown=$USER tools/install_python_dependencies.sh /home/$USER/tools/
 
 ENV VIRTUAL_ENV=/home/$USER/.venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-FROM base AS PYTHON_BUILDER
+FROM base AS BUILD
 
 RUN cd /home/$USER && \
     tools/install_ubuntu_dependencies.sh python && \
     tools/install_python_dependencies.sh && \
     rm -rf tools/ pyproject.toml uv.lock .cache
 FROM base AS FINAL
-COPY --from=PYTHON_BUILDER $VIRTUAL_ENV $VIRTUAL_ENV
+COPY --from=BUILD $VIRTUAL_ENV $VIRTUAL_ENV
 
 USER root
 RUN sudo git config --global --add safe.directory /tmp/openpilot
