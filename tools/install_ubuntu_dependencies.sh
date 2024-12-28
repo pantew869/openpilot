@@ -40,7 +40,6 @@ function install_ubuntu_common_requirements() {
     libavfilter-dev \
     libbz2-dev \
     libeigen3-dev \
-#    libffi-dev \
     libglew-dev \
     libgles2-mesa-dev \
     libglfw3-dev \
@@ -49,7 +48,6 @@ function install_ubuntu_common_requirements() {
     libncurses5-dev \
     libssl-dev \
     libusb-1.0-0-dev \
-   # libzmq3-dev \
     libzstd-dev \
     libsqlite3-dev \
     libsystemd-dev \
@@ -57,7 +55,6 @@ function install_ubuntu_common_requirements() {
     opencl-headers \
     ocl-icd-libopencl1 \
     ocl-icd-opencl-dev \
-  #  portaudio19-dev \
     qttools5-dev-tools \
     libqt5svg5-dev \
     libqt5serialbus5-dev  \
