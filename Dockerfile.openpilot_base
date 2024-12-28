@@ -76,9 +76,8 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 RUN cd /home/$USER && \
     tools/install_python_dependencies.sh && \
     rm -rf tools/ pyproject.toml uv.lock .cache
-
+USER root
 RUN apt remove libffi-dev portaudio19-dev --purge -y
 RUN du -sh
 
-USER root
 RUN sudo git config --global --add safe.directory /tmp/openpilot
