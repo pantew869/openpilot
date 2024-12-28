@@ -55,7 +55,7 @@ runs:
     - shell: bash
       run: |
         sudo chown -R $(whoami) /var/lib/docker
-        ls -lh /var/lib/docker/image/overlay2/layerdb/sha256
+        ls -lh /var/lib/docker/image/*
     - id: docker-cache-restore
       uses: actions/cache/restore@v4
       with:
