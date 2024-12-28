@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - CI_20s_old
-  pull_request:
   workflow_dispatch:
   workflow_call:
     inputs:
