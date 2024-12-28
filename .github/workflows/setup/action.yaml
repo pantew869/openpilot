@@ -55,7 +55,7 @@ runs:
     - shell: bash
       run: |
         sudo mkdir -p /var/lib/docker/images
-        sudo chmod -R 777 /var/lib/docker/images
+        sudo chmod -R 777 /var/lib/docker
     - id: docker-cache-restore
       uses: actions/cache/restore@v4
       with:
@@ -67,9 +67,6 @@ runs:
       run: |
         eval ${{ env.BUILD }}
         docker image prune -a --force --filter "label!=name=openpilot_base"
-    - shell: bash
-      if: steps.docker-cache-restore.outputs.cache-hit != 'true'
-      run: sudo chmod -R 777 /var/lib/docker/images
     - id: docker-cache-save
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
