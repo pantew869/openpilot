@@ -65,7 +65,7 @@ runs:
         docker image prune -a --force --filter "label!=name=openpilot_base"
     - id: docker-cache-save
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
-      uses: action/cache/save@v4
+      uses: actions/cache/save@v4
       with:
         path: /var/lib/docker/images
         key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}-${{ hashFiles('tools/install_ubuntu_dependencies.sh') }}-${{ hashFiles('tools/install_python_dependencies.sh') }}-${{ hashFIles('uv.lock') }}
