@@ -78,9 +78,9 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 FROM base AS BUILD
 COPY --chown=$USER pyproject.toml uv.lock /home/$USER
 COPY --chown=$USER tools/install_python_dependencies.sh /home/$USER/tools/
-COPY --chown=$USER tools/install_ubuntu_dependencies.sh /home/$USER/tools/
+COPY --chown=$USER tools/install_ubuntu_dependencies.sh /tmp/tools/
 USER root
-RUN /tools/install_ubuntu_dependencies.sh python
+RUN /tmp/tools/install_ubuntu_dependencies.sh python
 USER $USER
 RUN cd /home/$USER && \
     tools/install_python_dependencies.sh && \
