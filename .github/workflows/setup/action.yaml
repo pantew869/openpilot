@@ -51,6 +51,10 @@ runs:
       run: |
         find . -type f -executable -not -perm 755 -exec chmod 755 {} \;
         find . -type f -not -executable -not -perm 644 -exec chmod 644 {} \;
+
+    - uses: ScribeMD/docker-cache@0.5.0
+      with:
+        key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}-${{ hashFiles('tools/install_ubuntu_dependencies.sh') }}-${{ hashFiles('tools/install_python_dependencies.sh') }}-${{ hashFIles('uv.lock') }}
     # build our docker image
     - shell: bash
       run: eval ${{ env.BUILD }}
