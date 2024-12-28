@@ -55,10 +55,11 @@ runs:
     - shell: bash
       run: |
         sudo chmod -R 777 /var/lib/docker
+        sudo chmod -R 777 /var/lib/docker/*
     - id: docker-cache-restore
       uses: actions/cache/restore@v4
       with:
-        path: /var/lib/docker
+        path: /var/lib/docker/image
         key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}-${{ hashFiles('tools/install_ubuntu_dependencies.sh') }}-${{ hashFiles('tools/install_python_dependencies.sh') }}-${{ hashFIles('uv.lock') }}
     # build our docker image
     - shell: bash
@@ -67,11 +68,10 @@ runs:
         eval ${{ env.BUILD }}
     - shell: bash
       run: |
-        ls -l /var/lib/docker
         docker image prune -a --force --filter "label!=name=openpilot_base"
     - id: docker-cache-save
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
       with:
-        path: /var/lib/docker
+        path: /var/lib/docker/image
         key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}-${{ hashFiles('tools/install_ubuntu_dependencies.sh') }}-${{ hashFiles('tools/install_python_dependencies.sh') }}-${{ hashFIles('uv.lock') }}
