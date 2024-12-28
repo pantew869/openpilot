@@ -55,7 +55,7 @@ runs:
     - shell: bash
       run: |
         sudo mkdir -p /var/lib/docker/images
-        sudo chown docker:docker /var/lib/docker/images
+        sudo chmod -R 777 /var/lib/docker/images
     - id: docker-cache-restore
       uses: actions/cache/restore@v4
       with:
