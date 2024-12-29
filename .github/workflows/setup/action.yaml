@@ -53,18 +53,12 @@ runs:
         find . -type f -not -executable -not -perm 644 -exec chmod 644 {} \;
 
     - shell: bash
-      run: |
-        sudo chown -R $(whoami) /var/lib/docker
-        sudo chown -R $(whoami) /var/lib/docker/image
-        ls -lh /var/lib/docker/image/*
+      run: sudo chmod -R 777 /var/lib/docker
     - id: docker-cache-restore
       uses: actions/cache/restore@v4
       with:
         path: /var/lib/docker/image
         key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}-${{ hashFiles('tools/install_ubuntu_dependencies.sh') }}-${{ hashFiles('tools/install_python_dependencies.sh') }}-${{ hashFIles('uv.lock') }}
-    - shell: bash
-      run: |
-        sudo chown -R root /var/lib/docker
     # build our docker image
     - shell: bash
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
@@ -73,7 +67,7 @@ runs:
     - shell: bash
       run: |
         docker image prune -a --force --filter "label!=name=openpilot_base"
-        sudo chown -R $(whoami) /var/lib/docker
+        sudo chmod -R 777 /var/lib/docker
     - id: docker-cache-save
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
