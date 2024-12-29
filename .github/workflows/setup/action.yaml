@@ -62,6 +62,7 @@ runs:
         key: docker-${{ hashFiles('Dockerfile.openpilot_base', 'tools/install_ubuntu_dependencies.sh', 'tools/install_python_dependencies.sh', 'uv.lock', '.github/workflows/setup/action.yaml') }}
 
     - shell: bash
+      if: steps.docker-cache-restore.outputs.cache-hit == 'true'
       run: |
         sudo rm -rf /var/lib/docker
         sudo mv .ci_cache/docker /var/lib/docker
