@@ -65,7 +65,7 @@ runs:
       if: steps.docker-cache-restore.outputs.cache-hit == 'true'
       run: |
         sudo rm -rf /var/lib/docker
-        sudo mv .ci_cache/docker /var/lib/docker
+        sudo mv .ci_cache/docker /var/lib/
         ls -lh /var/lib/docker
         sudo systemctl start docker
         docker image ls
@@ -78,7 +78,7 @@ runs:
         docker builder prune -a --force
         sudo systemctl stop docker
         sudo rm -rf /var/lib/docker/volumes
-        sudo cp -R /var/lib/docker .ci_cache/docker
+        sudo cp -R /var/lib/docker .ci_cache/
         sudo chmod -R 777 .ci_cache/docker
     - id: docker-cache-save
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
