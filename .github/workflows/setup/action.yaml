@@ -57,7 +57,9 @@ runs:
       run: |
         sudo systemctl stop docker
         mkdir -p .ci_cache/docker
-        sudo ln -sf /usr/bin/unzstd /usr/bin/cat
+        sudo ln -sf /usr/bin/unzstd /usr/bin/pzstd
+        whereis unzstd
+        ls -lh /usr/bin/unzstd
     - id: docker-cache-restore
       uses: actions/cache/restore@v4
       with:
