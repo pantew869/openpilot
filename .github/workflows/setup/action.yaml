@@ -82,7 +82,7 @@ runs:
         sudo cp -R /var/lib/docker .ci_cache/
         sudo getfacl -R .ci_cache/docker > .ci_cache/docker/permissions
         sudo chmod -R 777 .ci_cache/docker
-        sudo echo "ZSTD_CLEVEL=1" >> /etc/environment
+        sudo sh -c 'echo "ZSTD_CLEVEL=1" >> /etc/environment'
     - id: docker-cache-save
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
