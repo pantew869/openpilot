@@ -60,6 +60,7 @@ runs:
         path: |
           /var/lib/docker/image
           /var/lib/docker/overlay2
+          /var/lib/docker/containerd
         key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}-${{ hashFiles('tools/install_ubuntu_dependencies.sh') }}-${{ hashFiles('tools/install_python_dependencies.sh') }}-${{ hashFIles('uv.lock') }}
     - shell: bash
       run: sudo chown -R root /var/lib/docker
@@ -80,4 +81,5 @@ runs:
         path: |
           /var/lib/docker/image
           /var/lib/docker/overlay2
+          /var/lib/docker/containerd
         key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}-${{ hashFiles('tools/install_ubuntu_dependencies.sh') }}-${{ hashFiles('tools/install_python_dependencies.sh') }}-${{ hashFIles('uv.lock') }}
