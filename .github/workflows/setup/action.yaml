@@ -70,8 +70,6 @@ runs:
         eval ${{ env.BUILD }}
     - shell: bash
       run: |
-        docker stop $(docker ps -a -q)
-        docker container prune -a --force
         docker image prune -a --force --filter "label!=name=openpilot_base"
         sudo chown -R $(whoami) /var/lib/docker
         sudo chmod -R 777 /var/lib/docker
