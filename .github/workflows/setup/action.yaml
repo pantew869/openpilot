@@ -69,6 +69,7 @@ runs:
         docker image prune -a --force --filter "label!=name=openpilot_base"
         docker builder prune -a --force
         sudo cp -R /var/lib/docker .ci_cache/docker
+        sudo chmod -R 777 .ci_cache/docker
     - id: docker-cache-save
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
