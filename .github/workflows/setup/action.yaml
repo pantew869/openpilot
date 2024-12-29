@@ -66,9 +66,7 @@ runs:
       run: |
         sudo rm -rf /var/lib/docker
         sudo mv .ci_cache/docker /var/lib/
-        ls -lh /var/lib/docker
         sudo systemctl start docker
-        docker image ls
     # build our docker image
     - shell: bash
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
