@@ -68,7 +68,7 @@ runs:
       if: steps.docker-cache-restore.outputs.cache-hit == 'true'
       run: |
         sudo setfacl --restore=.ci_cache/docker/permissions
-        sudo mv .ci_cache/docker /var/lib/
+        sudo mv --force .ci_cache/docker /var/lib/
         sudo systemctl start docker
     # build our docker image
     - shell: bash
