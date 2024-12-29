@@ -52,7 +52,9 @@ runs:
         find . -type f -executable -not -perm 755 -exec chmod 755 {} \;
         find . -type f -not -executable -not -perm 644 -exec chmod 644 {} \;
     - shell: bash
-      run: mkdir -p .ci_cache/docker
+      run: |
+        sudo systemctl stop docker
+        mkdir -p .ci_cache/docker
     - id: docker-cache-restore
       uses: actions/cache/restore@v4
       with:
@@ -60,7 +62,9 @@ runs:
         key: docker-${{ hashFiles('Dockerfile.openpilot_base', 'tools/install_ubuntu_dependencies.sh', 'tools/install_python_dependencies.sh', 'uv.lock') }}
 
     - shell: bash
-      run: sudo mv .ci_cache/docker /var/lib/docker
+      run: |
+        sudo mv .ci_cache/docker /var/lib/docker
+        sudo systemctl start docker
     # build our docker image
     - shell: bash
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
@@ -68,6 +72,8 @@ runs:
         eval ${{ env.BUILD }}
         docker image prune -a --force --filter "label!=name=openpilot_base"
         docker builder prune -a --force
+        sudo systemctl stop docker
+        sudo rm -rf /var/lib/docker/volumes
         sudo cp -R /var/lib/docker .ci_cache/docker
         sudo chmod -R 777 .ci_cache/docker
     - id: docker-cache-save
