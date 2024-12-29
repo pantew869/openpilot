@@ -40,7 +40,9 @@ runs:
       uses: ./.github/workflows/auto-cache
       with:
         path: .ci_cache/scons_cache
-        key: scons-${{ runner.arch }}-${{ env.CACHE_COMMIT_DATE }}-${{ github.sha }}
+        #key: scons-${{ runner.arch }}-${{ env.CACHE_COMMIT_DATE }}-${{ github.sha }}
+        key: scons-${{ runner.arch }}
+        save: true
         restore-keys: |
           scons-${{ runner.arch }}-${{ env.CACHE_COMMIT_DATE }}
           scons-${{ runner.arch }}
@@ -65,6 +67,7 @@ runs:
       if: steps.docker-cache-restore.outputs.cache-hit == 'true'
       run: |
         sudo rm -rf /var/lib/docker
+        sudo setfacl --restore=.ci_cache/docker/permissions
         sudo mv .ci_cache/docker /var/lib/
         sudo systemctl start docker
     # build our docker image
@@ -77,6 +80,7 @@ runs:
         sudo systemctl stop docker
         sudo rm -rf /var/lib/docker/volumes
         sudo cp -R /var/lib/docker .ci_cache/
+        sudo getfacl -R .ci_cache/docker > .ci_cache/docker/permissions
         sudo chmod -R 777 .ci_cache/docker
     - id: docker-cache-save
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
