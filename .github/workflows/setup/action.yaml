@@ -57,7 +57,9 @@ runs:
     - id: docker-cache-restore
       uses: actions/cache/restore@v3
       with:
-        path: /var/lib/docker
+        path: |
+          /var/lib/docker/image
+          /var/lib/docker/overlay2
         key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}-${{ hashFiles('tools/install_ubuntu_dependencies.sh') }}-${{ hashFiles('tools/install_python_dependencies.sh') }}-${{ hashFIles('uv.lock') }}
     - shell: bash
       run: sudo chown -R root /var/lib/docker
@@ -75,5 +77,7 @@ runs:
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
       uses: actions/cache/save@v3
       with:
-        path: /var/lib/docker
+        path: |
+          /var/lib/docker/image
+          /var/lib/docker/overlay2
         key: docker-${{ hashFiles('Dockerfile.openpilot_base') }}-${{ hashFiles('tools/install_ubuntu_dependencies.sh') }}-${{ hashFiles('tools/install_python_dependencies.sh') }}-${{ hashFIles('uv.lock') }}
