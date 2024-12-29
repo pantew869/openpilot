@@ -55,7 +55,7 @@ runs:
     - shell: bash
       run: sudo chown -R $(whoami) /var/lib/docker
     - id: docker-cache-restore
-      uses: actions/cache/restore@v3
+      uses: actions/cache/restore@v4
       with:
         path: |
           /var/lib/docker/image
@@ -75,7 +75,7 @@ runs:
         sudo chmod -R 777 /var/lib/docker
     - id: docker-cache-save
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v3
+      uses: actions/cache/save@v4
       with:
         path: |
           /var/lib/docker/image
