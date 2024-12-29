@@ -57,7 +57,6 @@ runs:
       run: |
         sudo systemctl stop docker
         mkdir -p .ci_cache/docker
-        sudo ln -sf /usr/bin/pzstd /usr/bin/zstd
     - id: docker-cache-restore
       uses: actions/cache/restore@v4
       with:
@@ -68,7 +67,7 @@ runs:
       if: steps.docker-cache-restore.outputs.cache-hit == 'true'
       run: |
         sudo setfacl --restore=.ci_cache/docker/permissions
-        sudo mv /var/lib/docker /trash
+        sudo rm -rf /var/lib/docker
         sudo mv .ci_cache/docker /var/lib/
         sudo systemctl start docker
     # build our docker image
@@ -83,6 +82,7 @@ runs:
         sudo cp -R /var/lib/docker .ci_cache/
         sudo getfacl -R .ci_cache/docker > .ci_cache/docker/permissions
         sudo chmod -R 777 .ci_cache/docker
+        sudo echo "ZSTD_CLEVEL=1" >> /etc/environment
     - id: docker-cache-save
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
