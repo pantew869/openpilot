@@ -63,6 +63,7 @@ runs:
 
     - shell: bash
       run: |
+        sudo rm -rf /var/lib/docker
         sudo mv .ci_cache/docker /var/lib/docker
         sudo systemctl start docker
     # build our docker image
