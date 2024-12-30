@@ -51,11 +51,6 @@ runs:
       run: |
         find . -type f -executable -not -perm 755 -exec chmod 755 {} \;
         find . -type f -not -executable -not -perm 644 -exec chmod 644 {} \;
-    - shell: bash
-      run: |
-        sudo rm -rf /usr/local/bin/zstdmt
-        sudo sh -c "echo '/usr/local/bin/pzstd --ultra -22' > /usr/local/bin/zstdmt"
-        sudo chmod 755 /usr/local/bin/zstdmt
     - id: docker-cache-restore
       uses: ./.github/workflows/auto-cache
       with:
@@ -66,10 +61,8 @@ runs:
     - shell: bash
       if: steps.docker-cache-restore.outputs.cache-hit == 'true'
       run: |
-        sudo setfacl --restore=.ci_cache/docker/permissions
         sudo rm -rf /var/lib/docker
         sudo mv .ci_cache/docker /var/lib/
-        sudo systemctl restart docker
     # build our docker image
     - shell: bash
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
