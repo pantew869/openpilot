@@ -56,7 +56,7 @@ runs:
     - shell: bash
       run: |
         sudo systemctl stop docker
-        mount -t tmpfs tmpfs /home/runner/work/_temp -o size=4G
+        sudo mount -t tmpfs tmpfs /home/runner/work/_temp -o size=4G,uid=$(id -u runner)
         mkdir -p .ci_cache/docker
     - id: docker-cache-restore
       uses: actions/cache/restore@v4
