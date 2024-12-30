@@ -85,7 +85,6 @@ runs:
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
       env:
-        ZSTD_CLEVEL: 19
         ZSTD_NBTHREADS: 0
       with:
         path: .ci_cache/docker
