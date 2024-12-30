@@ -53,7 +53,7 @@ runs:
         find . -type f -not -executable -not -perm 644 -exec chmod 644 {} \;
     - shell: bash
       run: |
-        sudo echo "/usr/local/bin/pzstd --ultra -22" > /usr/local/bin/zstdmt
+        sudo sh -c "echo "/usr/local/bin/pzstd --ultra -22" > /usr/local/bin/zstdmt"
         sudo chmod +x /usr/local/bin/zstdmt
         sudo ln -sf /usr/local/bin/pzstd /usr/local/bin/unzstd
     - id: docker-cache-restore
