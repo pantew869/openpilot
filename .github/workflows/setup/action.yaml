@@ -28,7 +28,7 @@ runs:
 
     # do this after checkout to ensure our custom LFS config is used to pull from GitLab
     - shell: bash
-      run: nohup git lfs pull &
+      run: git lfs pull
 
     # build cache
     - id: date
@@ -57,6 +57,8 @@ runs:
         path: .ci_cache/docker
         key: docker-${{ hashFiles('Dockerfile.openpilot_base', 'tools/install_ubuntu_dependencies.sh', 'tools/install_python_dependencies.sh', 'uv.lock', '.github/workflows/setup/action.yaml', 'selfdrive/test/docker_build.sh') }}
         restore-keys: docker-${{ hashFiles('Dockerfile.openpilot_base', 'tools/install_ubuntu_dependencies.sh', 'tools/install_python_dependencies.sh', 'uv.lock', '.github/workflows/setup/action.yaml', 'selfdrive/test/docker_build.sh') }}
+        env:
+        ZSTD_NBTHREADS: 0
 
     - shell: bash
       if: steps.docker-cache-restore.outputs.cache-hit == 'true'
@@ -81,7 +83,6 @@ runs:
       uses: actions/cache/save@v4
       env:
         ZSTD_NBTHREADS: 0
-        ZSTD_CLEVEL: 9
       with:
         path: .ci_cache/docker
         key: docker-${{ hashFiles('Dockerfile.openpilot_base', 'tools/install_ubuntu_dependencies.sh', 'tools/install_python_dependencies.sh', 'uv.lock', '.github/workflows/setup/action.yaml', 'selfdrive/test/docker_build.sh') }}
