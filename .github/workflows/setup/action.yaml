@@ -78,7 +78,7 @@ runs:
         eval ${{ env.BUILD }}
         docker image prune -a --force --filter "label!=name=openpilot_base"
         docker builder prune -a --force
-        docker volume prune -a --force
+        rm -rf /var/lib/docker/volumes
         sudo systemctl stop docker
         sudo cp -R /var/lib/docker .ci_cache/
         sudo getfacl -R .ci_cache/docker > .ci_cache/docker/permissions
