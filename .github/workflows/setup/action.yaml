@@ -27,8 +27,8 @@ runs:
         fi
 
     # do this after checkout to ensure our custom LFS config is used to pull from GitLab
-    #- shell: bash
-    #  run: git lfs pull
+    - shell: bash
+      run: git lfs pull
 
     # build cache
     - id: date
@@ -53,12 +53,10 @@ runs:
         find . -type f -not -executable -not -perm 644 -exec chmod 644 {} \;
     - id: docker-cache-restore
       uses: ./.github/workflows/auto-cache
-      env:
-        ZSTD_NBTHREADS: 0
       with:
         path: .ci_cache/docker
-        key: docker-${{ hashFiles('Dockerfile.openpilot_base', 'tools/install_ubuntu_dependencies.sh', 'tools/install_python_dependencies.sh', 'uv.lock', '.github/workflows/setup/action.yaml', 'selfdrive/test/docker_build.sh') }}
-        restore-keys: docker-${{ hashFiles('Dockerfile.openpilot_base', 'tools/install_ubuntu_dependencies.sh', 'tools/install_python_dependencies.sh', 'uv.lock', '.github/workflows/setup/action.yaml', 'selfdrive/test/docker_build.sh') }}
+        restore-keys: docker-${{ hashFiles('Dockerfile.openpilot_base', 'tools/install_ubuntu_dependencies.sh', 'tools/install_python_dependencies.sh', 'uv.lock', '.github/workflows/setup/action.yaml') }}
+        key: docker-${{ hashFiles('Dockerfile.openpilot_base', 'tools/install_ubuntu_dependencies.sh', 'tools/install_python_dependencies.sh', 'uv.lock', '.github/workflows/setup/action.yaml') }}
 
     - shell: bash
       if: steps.docker-cache-restore.outputs.cache-hit == 'true'
@@ -66,7 +64,7 @@ runs:
         sudo setfacl --restore=.ci_cache/docker/permissions
         sudo rm -rf /var/lib/docker
         sudo mv .ci_cache/docker /var/lib/
-        parallel ::: "sudo systemctl restart docker" "git lfs pull"
+        sudo systemctl restart docker
     # build our docker image
     - shell: bash
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
@@ -85,4 +83,4 @@ runs:
         ZSTD_NBTHREADS: 0
       with:
         path: .ci_cache/docker
-        key: docker-${{ hashFiles('Dockerfile.openpilot_base', 'tools/install_ubuntu_dependencies.sh', 'tools/install_python_dependencies.sh', 'uv.lock', '.github/workflows/setup/action.yaml', 'selfdrive/test/docker_build.sh') }}
+        key: docker-${{ hashFiles('Dockerfile.openpilot_base', 'tools/install_ubuntu_dependencies.sh', 'tools/install_python_dependencies.sh', 'uv.lock', '.github/workflows/setup/action.yaml') }}
