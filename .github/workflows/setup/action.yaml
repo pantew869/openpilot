@@ -28,7 +28,7 @@ runs:
 
     # do this after checkout to ensure our custom LFS config is used to pull from GitLab
     - shell: bash
-      run: git lfs pull
+      run: nohup git lfs pull &
 
     # build cache
     - id: date
@@ -64,7 +64,7 @@ runs:
         sudo setfacl --restore=.ci_cache/docker/permissions
         sudo rm -rf /var/lib/docker
         sudo mv .ci_cache/docker /var/lib/
-        sudo systemctl reload docker
+        sudo systemctl restart docker
     # build our docker image
     - shell: bash
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
