@@ -86,6 +86,8 @@ runs:
     - id: docker-cache-save
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
+      env:
+        ZSTD_CLEVEL: 19
       with:
         path: .ci_cache/docker
         key: docker-${{ hashFiles('Dockerfile.openpilot_base', 'tools/install_ubuntu_dependencies.sh', 'tools/install_python_dependencies.sh', 'uv.lock', '.github/workflows/setup/action.yaml') }}
