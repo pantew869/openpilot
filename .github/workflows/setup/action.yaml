@@ -66,7 +66,7 @@ runs:
         sudo setfacl --restore=.ci_cache/docker/permissions
         sudo rm -rf /var/lib/docker
         sudo mv .ci_cache/docker /var/lib/
-        parallel ::: sudo systemctl restart docker git lfs pull
+        parallel ::: "sudo systemctl restart docker" "git lfs pull"
     # build our docker image
     - shell: bash
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
