@@ -54,9 +54,8 @@ runs:
     - shell: bash
       run: |
         sudo rm -rf /usr/local/bin/zstdmt
-        sudo sh -c "echo '/usr/local/bin/pzstd --ultra -22' > /usr/local/bin/zstdmt"
+        sudo sh -c "echo '/usr/local/bin/zstd --ultra -22' > /usr/local/bin/zstdmt"
         sudo chmod 755 /usr/local/bin/zstdmt
-        sudo ln -sf /usr/local/bin/pzstd /usr/local/bin/unzstd
     - id: docker-cache-restore
       uses: ./.github/workflows/auto-cache
       with:
