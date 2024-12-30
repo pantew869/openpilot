@@ -40,9 +40,7 @@ runs:
       uses: ./.github/workflows/auto-cache
       with:
         path: .ci_cache/scons_cache
-        #key: scons-${{ runner.arch }}-${{ env.CACHE_COMMIT_DATE }}-${{ github.sha }}
-        key: scons-${{ runner.arch }}
-        save: true
+        key: scons-${{ runner.arch }}-${{ env.CACHE_COMMIT_DATE }}-${{ github.sha }}
         restore-keys: |
           scons-${{ runner.arch }}-${{ env.CACHE_COMMIT_DATE }}
           scons-${{ runner.arch }}
@@ -53,16 +51,12 @@ runs:
       run: |
         find . -type f -executable -not -perm 755 -exec chmod 755 {} \;
         find . -type f -not -executable -not -perm 644 -exec chmod 644 {} \;
-    - shell: bash
-      run: |
-        sudo systemctl stop docker
-        sudo mount -t tmpfs tmpfs /home/runner/work/_temp -o size=4G,uid=$(id -u runner)
-        mkdir -p .ci_cache/docker
     - id: docker-cache-restore
-      uses: actions/cache/restore@v4
+      uses: ./.github/workflows/auto-cache
       with:
         path: .ci_cache/docker
         key: docker-${{ hashFiles('Dockerfile.openpilot_base', 'tools/install_ubuntu_dependencies.sh', 'tools/install_python_dependencies.sh', 'uv.lock', '.github/workflows/setup/action.yaml') }}
+        restore-keys: docker-${{ hashFiles('Dockerfile.openpilot_base', 'tools/install_ubuntu_dependencies.sh', 'tools/install_python_dependencies.sh', 'uv.lock', '.github/workflows/setup/action.yaml') }}
 
     - shell: bash
       if: steps.docker-cache-restore.outputs.cache-hit == 'true'
@@ -70,16 +64,15 @@ runs:
         sudo setfacl --restore=.ci_cache/docker/permissions
         sudo rm -rf /var/lib/docker
         sudo mv .ci_cache/docker /var/lib/
-        sudo systemctl start docker
+        sudo systemctl restart docker
     # build our docker image
     - shell: bash
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
       run: |
         eval ${{ env.BUILD }}
-        docker image prune -a --force --filter "label!=name=openpilot_base"
         docker builder prune -a --force
-        sudo rm -rf /var/lib/docker/volumes
         sudo systemctl stop docker
+        sudo rm -rf /var/lib/docker/volumes
         sudo cp -R /var/lib/docker .ci_cache/
         sudo getfacl -R .ci_cache/docker > .ci_cache/docker/permissions
         sudo chmod -R 777 .ci_cache/docker
@@ -87,7 +80,7 @@ runs:
       if: steps.docker-cache-restore.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
       env:
-        ZSTD_CLEVEL: 1
+        ZSTD_CLEVEL: 9
       with:
         path: .ci_cache/docker
         key: docker-${{ hashFiles('Dockerfile.openpilot_base', 'tools/install_ubuntu_dependencies.sh', 'tools/install_python_dependencies.sh', 'uv.lock', '.github/workflows/setup/action.yaml') }}
